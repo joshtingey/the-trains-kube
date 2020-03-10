@@ -73,3 +73,9 @@ Setup TLS (first change the email address in cert-manager.yml to yours)
 ```
 $ kubectl apply -f manifests/ingress/tls
 ```
+
+For gitlab integration
+
+```
+$ kubectl apply -f manifests/gitlab-admin-service-account.yaml
+```
