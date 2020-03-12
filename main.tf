@@ -8,7 +8,7 @@ module "provider" {
   image           = "${var.digitalocean_image}"
   hosts           = "${var.node_count}"
   hostname_format = "${var.hostname_format}"
-  apt_packages    = ["ceph-common"]
+  apt_packages    = ["ceph-common", "lvm2"]
 }
 
 module "swap" {
