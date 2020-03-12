@@ -79,3 +79,16 @@ For gitlab integration
 ```
 $ kubectl apply -f manifests/gitlab-admin-service-account.yaml
 ```
+
+Setup for rook-ceph storage
+
+```
+$ kubectl apply -f manifests/storage/common.yaml
+$ kubectl apply -f manifests/storage/operator.yaml # Make sure to wait till this is fully deployed
+$ kubectl apply -f manifests/storage/cluster.yaml
+```
+To use rook-ceph toolbox
+
+```
+$ kubectl apply -f manifests/storage/toolbox.yaml
+```
