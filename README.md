@@ -97,10 +97,28 @@ $ kubectl apply -f manifests/storage/storageclass.yaml
 $ kubectl apply -f manifests/storage/toolbox.yaml # Use this to test if storage is working
 ```
 
-Setup jupyter-lab...
+Setup jupyter-lab (For now you will need to access the logs to get the token to authenticate)...
 
 ```
-$ kubectl apply -f manifests/jupyter
+$ kubectl apply -f manifests/jupyter # This also sets up the namespace 'thetrains'
 ```
 
-For now you will need to access the logs to get the token to authenticate
+Setup the metrics server (from within another directory)...
+
+```
+$ git clone https://github.com/kubernetes-sigs/metrics-server.git
+$ kubectl apply -f manifests/metrics
+```
+
+Setup the dashboard...
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc6/aio/deploy/recommended.yaml
+$ kubectl -n kubernetes-dashboard get secret
+$ kubectl -n kubernetes-dashboard describe secrets <secret-token-name>
+$ kubectl proxy # To forward the dashboard port
+```
+
+You can then go to the following and enter the token to authenticate...
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
