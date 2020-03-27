@@ -77,14 +77,16 @@ $ kubectl apply -f manifests/cert-manager/issuer-prod.yaml
 $ kubectl apply -f manifests/cert-manager/kuard-test.yaml # Use this to test if certificates are working
 ```
 
-Setup Gitlab Integration...
+Setup Gitlab Integration (you will need to modify values.yaml to integrate with github)...
 
 ```
 $ kubectl cluster-info | grep 'Kubernetes master' | awk '/http/ {print $NF}'
 $ kubectl get secrets
 $ kubectl get secret <secret name> -o jsonpath="{['data']['ca\.crt']}" | base64 --decode
-$ kubectl apply -f manifests/gitlab/
+$ kubectl apply -f manifests/gitlab/gitlab-admin-service-account.yaml
 $ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab-admin | awk '{print $1}')
+$ kubectl apply -f manifests/gitlab/namespace.yaml
+$ helm install --namespace gitlab gitlab-runner -f manifests/gitlab/values.yaml gitlab/gitlab-runner --version 0.15.0
 ```
 
 Setup rook-ceph storage...
