@@ -46,7 +46,7 @@ metadata:
   namespace: kuard
   annotations:
     kubernetes.io/ingress.class: "nginx"    
-    cert-manager.io/cluster-issuer: "letsencrypt-prod" # Can comment this out for no certificates
+    cert-manager.io/cluster-issuer: "letsencrypt-staging" # Can comment this out for no certificates
 spec:
   tls:
   - hosts:
