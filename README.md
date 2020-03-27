@@ -106,7 +106,6 @@ $ kubectl apply -f manifests/jupyter # This also sets up the namespace 'thetrain
 Setup the metrics server (from within another directory)...
 
 ```
-$ git clone https://github.com/kubernetes-sigs/metrics-server.git
 $ kubectl apply -f manifests/metrics
 ```
 
