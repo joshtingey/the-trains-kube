@@ -62,33 +62,45 @@ $ terraform destroy
 
 ### Applying Manifests
 
-Create the nginx ingress
+Setup the NGINX-ingress with a default backend...
 
 ```
 $ kubectl apply -f manifests/ingress
 ```
 
-Setup TLS (first change the email address in cert-manager.yml to yours)
+Setup Let's Encrypt certificates using cert-manager (change the email in issuer-staging.yml and issuer-prod.yml)...
 
 ```
-$ kubectl apply -f manifests/ingress/tls
+$ kubectl apply -f manifests/cert-manager/cert-manager.yaml # Wait till this is fully deployed
+$ kubectl apply -f manifests/cert-manager/issuer-staging.yaml
+$ kubectl apply -f manifests/cert-manager/issuer-prod.yaml
+$ kubectl apply -f manifests/cert-manager/kuard-test.yaml # Use this to test if certificates are working
 ```
 
-For gitlab integration
+Setup Gitlab Integration...
 
 ```
-$ kubectl apply -f manifests/gitlab-admin-service-account.yaml
+$ kubectl cluster-info | grep 'Kubernetes master' | awk '/http/ {print $NF}'
+$ kubectl get secrets
+$ kubectl get secret <secret name> -o jsonpath="{['data']['ca\.crt']}" | base64 --decode
+$ kubectl apply -f manifests/gitlab/
+$ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab-admin | awk '{print $1}')
 ```
 
-Setup for rook-ceph storage
+Setup rook-ceph storage...
 
 ```
 $ kubectl apply -f manifests/storage/common.yaml
 $ kubectl apply -f manifests/storage/operator.yaml # Make sure to wait till this is fully deployed
 $ kubectl apply -f manifests/storage/cluster.yaml
+$ kubectl apply -f manifests/storage/storageclass.yaml
+$ kubectl apply -f manifests/storage/toolbox.yaml # Use this to test if storage is working
 ```
-To use rook-ceph toolbox
+
+Setup jupyter-lab...
 
 ```
-$ kubectl apply -f manifests/storage/toolbox.yaml
+$ kubectl apply -f manifests/jupyter
 ```
+
+For now you will need to access the logs to get the token to authenticate
